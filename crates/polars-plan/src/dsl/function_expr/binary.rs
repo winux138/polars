@@ -7,6 +7,9 @@ use crate::{map, map_as_slice};
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 #[derive(Clone, PartialEq, Debug, Eq, Hash)]
 pub enum BinaryFunction {
+    Slice,
+    Head,
+    Tail,
     Contains,
     StartsWith,
     EndsWith,
@@ -27,6 +30,9 @@ impl BinaryFunction {
     pub(super) fn get_field(&self, mapper: FieldsMapper) -> PolarsResult<Field> {
         use BinaryFunction::*;
         match self {
+            Slice => todo!(),
+            Head => todo!(),
+            Tail => todo!(),
             Contains => mapper.with_dtype(DataType::Boolean),
             EndsWith | StartsWith => mapper.with_dtype(DataType::Boolean),
             #[cfg(feature = "binary_encoding")]
@@ -44,6 +50,9 @@ impl Display for BinaryFunction {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         use BinaryFunction::*;
         let s = match self {
+            Slice => todo!(),
+            Head => todo!(),
+            Tail => todo!(),
             Contains => "contains",
             StartsWith => "starts_with",
             EndsWith => "ends_with",
@@ -67,6 +76,9 @@ impl From<BinaryFunction> for SpecialEq<Arc<dyn ColumnsUdf>> {
     fn from(func: BinaryFunction) -> Self {
         use BinaryFunction::*;
         match func {
+            Slice => todo!(),
+            Head => todo!(),
+            Tail => todo!(),
             Contains => {
                 map_as_slice!(contains)
             },
