@@ -30,9 +30,7 @@ impl BinaryFunction {
     pub(super) fn get_field(&self, mapper: FieldsMapper) -> PolarsResult<Field> {
         use BinaryFunction::*;
         match self {
-            Slice => todo!(),
-            Head => todo!(),
-            Tail => todo!(),
+            Slice | Head | Tail => mapper.with_same_dtype(),
             Contains => mapper.with_dtype(DataType::Boolean),
             EndsWith | StartsWith => mapper.with_dtype(DataType::Boolean),
             #[cfg(feature = "binary_encoding")]
