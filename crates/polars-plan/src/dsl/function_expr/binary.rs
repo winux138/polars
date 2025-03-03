@@ -50,9 +50,9 @@ impl Display for BinaryFunction {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         use BinaryFunction::*;
         let s = match self {
-            Slice => todo!(),
-            Head => todo!(),
-            Tail => todo!(),
+            Slice => todo!("slice"),
+            Head => todo!("head"),
+            Tail => todo!("tail"),
             Contains => "contains",
             StartsWith => "starts_with",
             EndsWith => "ends_with",
