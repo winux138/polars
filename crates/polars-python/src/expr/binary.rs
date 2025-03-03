@@ -22,6 +22,22 @@ impl PyExpr {
         self.inner.clone().binary().starts_with(sub.inner).into()
     }
 
+    fn bin_slice(&self, offset: Self, length: Self) -> Self {
+        self.inner
+            .clone()
+            .binary()
+            .slice(offset.inner, length.inner)
+            .into()
+    }
+
+    fn bin_head(&self, n: Self) -> Self {
+        self.inner.clone().binary().head(n.inner).into()
+    }
+
+    fn bin_tail(&self, n: Self) -> Self {
+        self.inner.clone().binary().tail(n.inner).into()
+    }
+
     #[cfg(feature = "binary_encoding")]
     fn bin_hex_decode(&self, strict: bool) -> Self {
         self.inner.clone().binary().hex_decode(strict).into()

@@ -39,6 +39,36 @@ impl BinaryNameSpace {
             .map_private(FunctionExpr::BinaryExpr(BinaryFunction::Size))
     }
 
+    /// Slice the binary values.
+    pub fn slice(self, offset: Expr, length: Expr) -> Expr {
+        self.0.map_many_private(
+            FunctionExpr::BinaryExpr(BinaryFunction::Slice),
+            &[offset, length],
+            false,
+            None,
+        )
+    }
+
+    /// Take the first `n` bytes of the binary values.
+    pub fn head(self, n: Expr) -> Expr {
+        self.0.map_many_private(
+            FunctionExpr::BinaryExpr(BinaryFunction::Head),
+            &[n],
+            false,
+            None,
+        )
+    }
+
+    /// Take the last `n` bytes of the binary values.
+    pub fn tail(self, n: Expr) -> Expr {
+        self.0.map_many_private(
+            FunctionExpr::BinaryExpr(BinaryFunction::Tail),
+            &[n],
+            false,
+            None,
+        )
+    }
+
     #[cfg(feature = "binary_encoding")]
     pub fn hex_decode(self, strict: bool) -> Expr {
         self.0
