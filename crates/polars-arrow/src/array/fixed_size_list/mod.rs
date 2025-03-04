@@ -31,7 +31,7 @@ impl FixedSizeListArray {
     /// Creates a new [`FixedSizeListArray`].
     ///
     /// # Errors
-    /// This function returns an error iff:
+    /// This function returns an error if:
     /// * The `dtype`'s physical type is not [`crate::datatypes::PhysicalType::FixedSizeList`]
     /// * The `dtype`'s inner field's data type is not equal to `values.dtype`.
     /// * The length of `values` is not a multiple of `size` in `dtype`
