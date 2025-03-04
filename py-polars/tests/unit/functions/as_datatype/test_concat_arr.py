@@ -36,6 +36,15 @@ def test_concat_arr() -> None:
         pl.Series([[1, 2], [3, None], None], dtype=pl.Array(pl.Int64, 2)),
     )
 
+    ENUM = pl.Enum(["A", "B"])
+    assert_series_equal(
+        pl.select(
+            pl.concat_arr(
+                pl.DataFrame([pl.Series("left", ["A", "B"], dtype=ENUM), pl.Series("right", ["A", "B"], dtype=ENUM)]),
+            )
+        ),
+        pl.Series([[1, 2], [3, None], None], dtype=pl.Array(pl.Int64, 2)),
+    )
 
 def test_concat_arr_broadcast() -> None:
     assert_series_equal(
