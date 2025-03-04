@@ -74,9 +74,15 @@ impl From<BinaryFunction> for SpecialEq<Arc<dyn ColumnsUdf>> {
     fn from(func: BinaryFunction) -> Self {
         use BinaryFunction::*;
         match func {
-            Slice => todo!(),
-            Head => todo!(),
-            Tail => todo!(),
+            Slice => {
+                map_as_slice!(slice)
+            },
+            Head => {
+                map_as_slice!(head)
+            },
+            Tail => {
+                map_as_slice!(tail)
+            },
             Contains => {
                 map_as_slice!(contains)
             },
@@ -99,6 +105,34 @@ impl From<BinaryFunction> for SpecialEq<Arc<dyn ColumnsUdf>> {
             FromBuffer(dtype, is_little_endian) => map!(from_buffer, &dtype, is_little_endian),
         }
     }
+}
+
+pub(super) fn bin_slice(s: &[Column]) -> PolarsResult<Column> {
+    todo!();
+    let ca = s[0].binary()?;
+    let offset = &s[1].cast(&DataType::Int64)?;
+    // We strict cast, otherwise negative value will be treated as a valid length.
+    let length = &s[2].strict_cast(&DataType::UInt64)?;
+
+    Ok(ca.slice(offset.i64()?, length.u64()?).into_column())
+}
+
+pub(super) fn bin_head(s: &[Column]) -> PolarsResult<Column> {
+    let ca = s[0].binary()?;
+    let lit = s[1];
+    Ok(ca
+        .contains_chunked(lit)
+        .with_name(ca.name().clone())
+        .into_column())
+}
+
+pub(super) fn bin_tail(s: &[Column]) -> PolarsResult<Column> {
+    let ca = s[0].binary()?;
+    let lit = s[1].binary()?;
+    Ok(ca
+        .contains_chunked(lit)
+        .with_name(ca.name().clone())
+        .into_column())
 }
 
 pub(super) fn contains(s: &[Column]) -> PolarsResult<Column> {

@@ -32,6 +32,25 @@ pub trait BinaryNameSpaceImpl: AsBinary {
         }
     }
 
+    /// TODO! Slice the binary values.
+    fn slice(&self, offset: &Column, length: &Column) -> PolarsResult<BinaryChunked> {
+        todo!();
+    }
+
+    /// TODO! Slice the binary values.
+    ///
+    /// Determines a subslice starting from `offset` and with length `length` of each of the elements in `array`.
+    /// `offset` can be negative, in which case the start counts from the end of the bytes.
+    fn slice_chunked(&self, offset: &Column, length: &Column) -> PolarsResult<BinaryChunked> {
+        let ca = self.as_binary();
+        let offset = offset.cast(&DataType::Int64)?;
+        // We strict cast, otherwise negative value will be treated as a valid length.
+        let length = length.strict_cast(&DataType::UInt64)?;
+
+        // Ok((ca, offset.i64()?, length.u64()?))
+        Ok(ca.slice(offset.i64()?, length.u64()?))
+    }
+
     /// Check if strings ends with a substring
     fn ends_with(&self, sub: &[u8]) -> BooleanChunked {
         let ca = self.as_binary();
